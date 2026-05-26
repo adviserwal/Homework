@@ -1,187 +1,589 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Домашние задания WAL</title>
+  <style>
+    :root {
+      --bg: #f6f4ef;
+      --panel: #ffffff;
+      --panel-soft: #fbfaf6;
+      --ink: #1f2320;
+      --muted: #6f746f;
+      --line: #dedbd1;
+      --line-strong: #c9c3b6;
+      --green: #2f7d5b;
+      --green-soft: #e7f2eb;
+      --red: #b64646;
+      --red-soft: #fdecec;
+      --amber: #a46612;
+      --amber-soft: #fff0d7;
+      --blue: #5b65c8;
+      --teal: #159075;
+      --coral: #d6633a;
+      --shadow: 0 18px 50px rgba(48, 43, 35, 0.10);
+    }
 
-<h2 class="sr-only">Чек-лист домашних заданий WAL — серия «12 шагов продаж»</h2>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-.wrap{padding:20px 0 28px}
-.top-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:16px 20px 14px;margin-bottom:14px}
-.eyebrow{font-size:11px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--color-text-tertiary);margin-bottom:5px}
-.main-title{font-size:19px;font-weight:500;color:var(--color-text-primary);margin-bottom:10px}
-.pill-row{display:flex;gap:6px;flex-wrap:wrap}
-.pill{font-size:11px;font-weight:500;padding:3px 9px;border-radius:99px;border:0.5px solid}
-.pill-red{background:#FCEBEB;color:#A32D2D;border-color:#F09595}
-.pill-amber{background:#FAEEDA;color:#854F0B;border-color:#EF9F27}
-.pill-green{background:#EAF3DE;color:#3B6D11;border-color:#97C459}
-.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
-.stat{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:12px;text-align:center}
-.stat-num{font-size:24px;font-weight:500;color:var(--color-text-primary);line-height:1}
-.stat-num.green{color:#3B6D11}
-.stat-num.amber{color:#854F0B}
-.stat-lbl{font-size:11px;color:var(--color-text-tertiary);margin-top:4px}
-.prog-wrap{background:var(--color-background-secondary);border-radius:99px;height:5px;margin-bottom:18px;overflow:hidden}
-.prog-fill{height:100%;border-radius:99px;background:#3B6D11;width:0%;transition:width .5s cubic-bezier(.4,0,.2,1)}
-.section{margin-bottom:14px}
-.sec-head{display:flex;align-items:center;gap:8px;padding:0 0 8px;border-bottom:0.5px solid var(--color-border-tertiary);margin-bottom:8px}
-.sec-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
-.d-purple{background:#7F77DD}
-.d-teal{background:#1D9E75}
-.d-coral{background:#D85A30}
-.sec-label{font-size:11px;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.06em}
-.sec-count{font-size:11px;color:var(--color-text-tertiary);margin-left:auto}
-.tasks{display:flex;flex-direction:column;gap:5px}
-.task{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-tertiary);background:var(--color-background-primary);cursor:pointer;transition:background .12s,border-color .12s;user-select:none}
-.task:hover{background:var(--color-background-secondary);border-color:var(--color-border-secondary)}
-.task.done{background:var(--color-background-secondary)}
-.task.done .t-text{text-decoration:line-through;color:var(--color-text-tertiary)}
-.task.done .t-sub{color:var(--color-text-tertiary)}
-.cb{width:17px;height:17px;border-radius:4px;border:1.5px solid var(--color-border-secondary);flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:background .12s,border-color .12s}
-.task.done .cb{background:#3B6D11;border-color:#3B6D11}
-.task.done .cb::after{content:'';width:4px;height:8px;border:1.5px solid #fff;border-top:none;border-left:none;transform:rotate(45deg) translate(-1px,-1px);display:block}
-.t-body{flex:1;min-width:0}
-.t-text{font-size:13px;color:var(--color-text-primary);line-height:1.4}
-.t-sub{font-size:11.5px;color:var(--color-text-secondary);margin-top:3px;line-height:1.4}
-.tag{font-size:10.5px;font-weight:500;padding:2px 7px;border-radius:99px;flex-shrink:0;align-self:flex-start;margin-top:2px;border:0.5px solid}
-.tag-red{background:#FCEBEB;color:#A32D2D;border-color:#F09595}
-.tag-amber{background:#FAEEDA;color:#854F0B;border-color:#EF9F27}
-.alert{display:flex;align-items:flex-start;gap:10px;padding:11px 14px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-tertiary);margin-top:6px}
-.alert i{font-size:16px;color:#A32D2D;flex-shrink:0;margin-top:1px}
-.alert-text{font-size:12px;color:var(--color-text-secondary);line-height:1.5}
-.alert-text b{color:var(--color-text-primary);font-weight:500}
-</style>
+    * {
+      box-sizing: border-box;
+    }
 
-<div class="wrap">
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.76), rgba(255,255,255,0) 250px),
+        var(--bg);
+      color: var(--ink);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      font-size: 15px;
+      line-height: 1.45;
+    }
 
-<div class="top-card">
-  <div class="eyebrow">WAL HoReCa · 12 шагов продаж</div>
-  <div class="main-title">Домашние задания</div>
-  <div class="pill-row">
-    <span class="pill pill-red">Дедлайн: вт 02.06.2026</span>
-    <span class="pill pill-amber" id="pill-open">Не сделано: 8</span>
-  </div>
-</div>
+    button,
+    input {
+      font: inherit;
+    }
 
-<div class="stats-row">
-  <div class="stat"><div class="stat-num" id="n-total">8</div><div class="stat-lbl">всего задач</div></div>
-  <div class="stat"><div class="stat-num green" id="n-done">0</div><div class="stat-lbl">выполнено</div></div>
-  <div class="stat"><div class="stat-num amber" id="n-left">8</div><div class="stat-lbl">осталось</div></div>
-</div>
+    .page {
+      width: min(860px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 28px 0 44px;
+    }
 
-<div class="prog-wrap"><div class="prog-fill" id="prog"></div></div>
+    .hero {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      padding: 26px;
+    }
 
-<div class="section">
-  <div class="sec-head">
-    <div class="sec-dot d-purple"></div>
-    <div class="sec-label">Встреча №1 · 05.05 · Личная эффективность</div>
-    <div class="sec-count">3 задачи</div>
-  </div>
-  <div class="tasks">
-    <div class="task" onclick="toggle(this)">
-      <div class="cb"></div>
-      <div class="t-body">
-        <div class="t-text">Проанализировать свои ресурсы и зоны роста</div>
-        <div class="t-sub">Выписать: что есть сейчас, чего не хватает для результата</div>
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 5px;
+      background: linear-gradient(90deg, var(--blue), var(--teal), var(--coral), var(--amber));
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .title-row {
+      display: flex;
+      gap: 18px;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+
+    h1 {
+      max-width: 620px;
+      margin: 0;
+      font-size: 34px;
+      line-height: 1.05;
+      letter-spacing: 0;
+    }
+
+    .deadline {
+      display: grid;
+      gap: 6px;
+      min-width: 170px;
+      padding: 12px 14px;
+      border-radius: 8px;
+      background: var(--red-soft);
+      color: var(--red);
+      border: 1px solid rgba(182, 70, 70, 0.22);
+      text-align: right;
+    }
+
+    .deadline span {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .deadline strong {
+      font-size: 14px;
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .stat {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel-soft);
+      padding: 16px 14px;
+    }
+
+    .stat-value {
+      display: block;
+      font-size: 32px;
+      font-weight: 850;
+      line-height: 1;
+    }
+
+    .stat-value.done {
+      color: var(--green);
+    }
+
+    .stat-value.left {
+      color: var(--amber);
+    }
+
+    .stat-label {
+      display: block;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .progress {
+      height: 9px;
+      margin-top: 16px;
+      border-radius: 999px;
+      background: #ebe7dc;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--green), var(--teal));
+      transition: width 220ms ease;
+    }
+
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin: 18px 0 16px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .reset {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--panel);
+      color: var(--muted);
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+
+    .reset:hover {
+      border-color: var(--line-strong);
+      color: var(--ink);
+    }
+
+    .section {
+      margin-top: 16px;
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 10px;
+      align-items: center;
+      margin: 0 0 9px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 850;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--blue);
+    }
+
+    .dot.teal {
+      background: var(--teal);
+    }
+
+    .dot.coral {
+      background: var(--coral);
+    }
+
+    .section-count {
+      font-weight: 700;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+
+    .tasks {
+      display: grid;
+      gap: 8px;
+    }
+
+    .task {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 12px;
+      align-items: start;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255,255,255,0.82);
+      cursor: pointer;
+      transition: transform 150ms ease, border-color 150ms ease, background 150ms ease, box-shadow 150ms ease;
+    }
+
+    .task:hover {
+      transform: translateY(-1px);
+      border-color: var(--line-strong);
+      box-shadow: 0 10px 24px rgba(48, 43, 35, 0.07);
+      background: var(--panel);
+    }
+
+    .task input {
+      width: 20px;
+      height: 20px;
+      margin: 1px 0 0;
+      accent-color: var(--green);
+      cursor: pointer;
+    }
+
+    .task-title {
+      margin: 0;
+      font-weight: 760;
+      color: var(--ink);
+    }
+
+    .task-note {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .badge {
+      align-self: start;
+      border: 1px solid rgba(182, 70, 70, 0.25);
+      border-radius: 999px;
+      background: var(--red-soft);
+      color: var(--red);
+      padding: 4px 9px;
+      font-size: 11px;
+      font-weight: 850;
+      line-height: 1;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .badge.new {
+      border-color: rgba(164, 102, 18, 0.25);
+      background: var(--amber-soft);
+      color: var(--amber);
+    }
+
+    .task.is-done {
+      background: var(--green-soft);
+      border-color: rgba(47, 125, 91, 0.24);
+    }
+
+    .task.is-done .task-title,
+    .task.is-done .task-note {
+      color: #66736b;
+      text-decoration: line-through;
+      text-decoration-thickness: 1px;
+    }
+
+    .notice {
+      margin-top: 18px;
+      padding: 16px;
+      border: 1px solid rgba(182, 70, 70, 0.20);
+      border-radius: 8px;
+      background: #fff8f5;
+      color: #5b3b31;
+    }
+
+    .notice strong {
+      color: var(--red);
+    }
+
+    @media (max-width: 700px) {
+      .page {
+        width: min(100% - 20px, 860px);
+        padding-top: 14px;
+      }
+
+      .hero {
+        padding: 20px 16px;
+      }
+
+      .title-row {
+        display: grid;
+      }
+
+      h1 {
+        font-size: 27px;
+      }
+
+      .deadline {
+        min-width: 0;
+        text-align: left;
+      }
+
+      .summary {
+        grid-template-columns: 1fr;
+      }
+
+      .toolbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .section-head {
+        grid-template-columns: auto 1fr;
+      }
+
+      .section-count {
+        grid-column: 2;
+      }
+
+      .task {
+        grid-template-columns: auto 1fr;
+        gap: 10px;
+      }
+
+      .badge {
+        grid-column: 2;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <p class="eyebrow">WAL HoReCa · 12 шагов продаж</p>
+      <div class="title-row">
+        <h1>Домашние задания</h1>
+        <div class="deadline">
+          <span>Дедлайн</span>
+          <strong>вт 02.06.2026</strong>
+        </div>
       </div>
-      <span class="tag tag-red">хвост</span>
-    </div>
-    <div class="task" onclick="toggle(this)">
-      <div class="cb"></div>
-      <div class="t-body">
-        <div class="t-text">Выбрать 1 сегмент партнёров для отработки</div>
-        <div class="t-sub">Определить: кто твой ключевой клиент в HoReCa-канале</div>
-      </div>
-      <span class="tag tag-red">хвост</span>
-    </div>
-    <div class="task" onclick="toggle(this)">
-      <div class="cb"></div>
-      <div class="t-body">
-        <div class="t-text">Описать последствия для партнёра, если он не с нами</div>
-        <div class="t-sub">Что произойдёт с его бизнесом если выберет конкурента? Что теряет?</div>
-      </div>
-      <span class="tag tag-red">хвост</span>
-    </div>
-  </div>
-</div>
 
-<div class="section">
-  <div class="sec-head">
-    <div class="sec-dot d-teal"></div>
-    <div class="sec-label">Встречи №2–3 · Эффективные коммуникации</div>
-    <div class="sec-count">3 задачи</div>
-  </div>
-  <div class="tasks">
-    <div class="task" onclick="toggle(this)">
-      <div class="cb"></div>
-      <div class="t-body">
-        <div class="t-text">Записать аудио реального захода к партнёру</div>
-        <div class="t-sub">Диктофон → прослушать на скорости 2× → выписать 3 пункта: хорошо / исправить / забрать</div>
-      </div>
-      <span class="tag tag-red">хвост</span>
-    </div>
-    <div class="task" onclick="toggle(this)">
-      <div class="cb"></div>
-      <div class="t-body">
-        <div class="t-text">Применить принцип «карта ≠ территория» с партнёром</div>
-        <div class="t-sub">Зафиксировать 1 пример: когда заметил, что у вас разные картины мира</div>
-      </div>
-      <span class="tag tag-red">хвост</span>
-    </div>
-    <div class="task" onclick="toggle(this)">
-      <div class="cb"></div>
-      <div class="t-body">
-        <div class="t-text">Найти положительное намерение «неприятного» партнёра</div>
-        <div class="t-sub">1 реальный случай — что он защищал, когда вёл себя раздражающе?</div>
-      </div>
-      <span class="tag tag-red">хвост</span>
-    </div>
-  </div>
-</div>
+      <section class="summary" aria-label="Статус выполнения">
+        <div class="stat">
+          <span class="stat-value" id="total-count">8</span>
+          <span class="stat-label">всего задач</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value done" id="done-count">0</span>
+          <span class="stat-label">выполнено</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value left" id="left-count">8</span>
+          <span class="stat-label">осталось</span>
+        </div>
+      </section>
 
-<div class="section">
-  <div class="sec-head">
-    <div class="sec-dot d-coral"></div>
-    <div class="sec-label">Встреча №4 · 26.05 · Установление контакта</div>
-    <div class="sec-count">2 задачи</div>
-  </div>
-  <div class="tasks">
-    <div class="task" onclick="toggle(this)">
-      <div class="cb"></div>
-      <div class="t-body">
-        <div class="t-text">Сделать минимум 5 комплиментов на 3 встречах с партнёрами</div>
-        <div class="t-sub">Разные категории: заведение, команда, внешность, концепция, меню</div>
+      <div class="progress" aria-label="Прогресс выполнения">
+        <div class="progress-fill" id="progress-fill"></div>
       </div>
-      <span class="tag tag-amber">новое</span>
+    </header>
+
+    <div class="toolbar">
+      <span id="status-text">Отмечай задания по мере выполнения. Прогресс сохранится в этом браузере.</span>
+      <button class="reset" type="button" id="reset-button">Сбросить отметки</button>
     </div>
-    <div class="task" onclick="toggle(this)">
-      <div class="cb"></div>
-      <div class="t-body">
-        <div class="t-text">Найти 10 точек соприкосновения на 2 встречах</div>
-        <div class="t-sub">Записать: общие интересы, опыт, ценности, сложности</div>
+
+    <section class="section" aria-labelledby="section-1">
+      <div class="section-head">
+        <span class="dot"></span>
+        <span id="section-1">Встреча №1 · 05.05 · Личная эффективность</span>
+        <span class="section-count">3 задачи</span>
       </div>
-      <span class="tag tag-amber">новое</span>
-    </div>
-  </div>
-</div>
+      <div class="tasks">
+        <label class="task">
+          <input type="checkbox" data-task="resources">
+          <span>
+            <p class="task-title">Проанализировать свои ресурсы и зоны роста</p>
+            <p class="task-note">Выписать: что есть сейчас, чего не хватает для результата</p>
+          </span>
+          <span class="badge">хвост</span>
+        </label>
+        <label class="task">
+          <input type="checkbox" data-task="segment">
+          <span>
+            <p class="task-title">Выбрать 1 сегмент партнёров для отработки</p>
+            <p class="task-note">Определить: кто твой ключевой клиент в HoReCa-канале</p>
+          </span>
+          <span class="badge">хвост</span>
+        </label>
+        <label class="task">
+          <input type="checkbox" data-task="consequences">
+          <span>
+            <p class="task-title">Описать последствия для партнёра, если он не с нами</p>
+            <p class="task-note">Что произойдёт с его бизнесом, если выберет конкурента? Что теряет?</p>
+          </span>
+          <span class="badge">хвост</span>
+        </label>
+      </div>
+    </section>
 
-<div class="alert">
-  <i class="ti ti-alert-triangle" aria-hidden="true"></i>
-  <div class="alert-text"><b>Жёсткое правило:</b> если ДЗ не закрыты к вторнику 02.06 — серия прекращается. Следующая встреча начинается с проверки.</div>
-</div>
+    <section class="section" aria-labelledby="section-2">
+      <div class="section-head">
+        <span class="dot teal"></span>
+        <span id="section-2">Встречи №2-3 · Эффективные коммуникации</span>
+        <span class="section-count">3 задачи</span>
+      </div>
+      <div class="tasks">
+        <label class="task">
+          <input type="checkbox" data-task="audio">
+          <span>
+            <p class="task-title">Записать аудио реального захода к партнёру</p>
+            <p class="task-note">Диктофон, прослушать на скорости 2x, выписать 3 пункта: хорошо / исправить / забрать</p>
+          </span>
+          <span class="badge">хвост</span>
+        </label>
+        <label class="task">
+          <input type="checkbox" data-task="map">
+          <span>
+            <p class="task-title">Применить принцип «карта ≠ территория» с партнёром</p>
+            <p class="task-note">Зафиксировать 1 пример: когда заметил, что у вас разные картины мира</p>
+          </span>
+          <span class="badge">хвост</span>
+        </label>
+        <label class="task">
+          <input type="checkbox" data-task="intention">
+          <span>
+            <p class="task-title">Найти положительное намерение «неприятного» партнёра</p>
+            <p class="task-note">1 реальный случай: что он защищал, когда вёл себя раздражающе?</p>
+          </span>
+          <span class="badge">хвост</span>
+        </label>
+      </div>
+    </section>
 
-</div>
+    <section class="section" aria-labelledby="section-3">
+      <div class="section-head">
+        <span class="dot coral"></span>
+        <span id="section-3">Встреча №4 · 26.05 · Установление контакта</span>
+        <span class="section-count">2 задачи</span>
+      </div>
+      <div class="tasks">
+        <label class="task">
+          <input type="checkbox" data-task="compliments">
+          <span>
+            <p class="task-title">Сделать минимум 5 комплиментов на 3 встречах с партнёрами</p>
+            <p class="task-note">Разные категории: заведение, команда, внешность, концепция, меню</p>
+          </span>
+          <span class="badge new">новое</span>
+        </label>
+        <label class="task">
+          <input type="checkbox" data-task="common-points">
+          <span>
+            <p class="task-title">Найти 10 точек соприкосновения на 2 встречах</p>
+            <p class="task-note">Записать: общие интересы, опыт, ценности, сложности</p>
+          </span>
+          <span class="badge new">новое</span>
+        </label>
+      </div>
+    </section>
 
-<script>
-const all = document.querySelectorAll('.task');
-const tot = all.length;
-function upd(){
-  const done=[...all].filter(t=>t.classList.contains('done')).length;
-  const left=tot-done;
-  document.getElementById('n-done').textContent=done;
-  document.getElementById('n-left').textContent=left;
-  document.getElementById('n-total').textContent=tot;
-  document.getElementById('prog').style.width=Math.round(done/tot*100)+'%';
-  const p=document.getElementById('pill-open');
-  if(left===0){p.className='pill pill-green';p.textContent='Всё сделано!';}
-  else{p.className='pill pill-amber';p.textContent='Не сделано: '+left;}
-}
-function toggle(el){el.classList.toggle('done');upd();}
-upd();
-</script>
+    <aside class="notice">
+      <strong>Жёсткое правило:</strong> если ДЗ не закрыты к вторнику 02.06, серия прекращается. Следующая встреча начинается с проверки.
+    </aside>
+  </main>
+
+  <script>
+    const storageKey = "wal-homework-checklist-v3";
+    const checkboxes = Array.from(document.querySelectorAll("input[type='checkbox']"));
+    const totalCount = document.getElementById("total-count");
+    const doneCount = document.getElementById("done-count");
+    const leftCount = document.getElementById("left-count");
+    const progressFill = document.getElementById("progress-fill");
+    const statusText = document.getElementById("status-text");
+    const resetButton = document.getElementById("reset-button");
+
+    function readState() {
+      try {
+        return JSON.parse(window.localStorage.getItem(storageKey)) || {};
+      } catch {
+        return {};
+      }
+    }
+
+    function writeState() {
+      try {
+        const state = {};
+        checkboxes.forEach((checkbox) => {
+          state[checkbox.dataset.task] = checkbox.checked;
+        });
+        window.localStorage.setItem(storageKey, JSON.stringify(state));
+      } catch {
+        // Some browsers block localStorage for file:// pages. Counters still work.
+      }
+    }
+
+    function syncTaskStyles() {
+      checkboxes.forEach((checkbox) => {
+        checkbox.closest(".task").classList.toggle("is-done", checkbox.checked);
+      });
+    }
+
+    function updateSummary() {
+      const total = checkboxes.length;
+      const done = checkboxes.filter((checkbox) => checkbox.checked).length;
+      const left = total - done;
+      const percent = total ? Math.round((done / total) * 100) : 0;
+
+      totalCount.textContent = total;
+      doneCount.textContent = done;
+      leftCount.textContent = left;
+      progressFill.style.width = percent + "%";
+
+      statusText.textContent = left === 0
+        ? "Всё закрыто. Можно идти на следующую встречу спокойно."
+        : "Осталось закрыть: " + left + " из " + total + ". Прогресс сохранится в этом браузере.";
+    }
+
+    function render() {
+      syncTaskStyles();
+      updateSummary();
+    }
+
+    const savedState = readState();
+    checkboxes.forEach((checkbox) => {
+      checkbox.checked = Boolean(savedState[checkbox.dataset.task]);
+      checkbox.addEventListener("change", () => {
+        render();
+        writeState();
+      });
+    });
+
+    resetButton.addEventListener("click", () => {
+      checkboxes.forEach((checkbox) => {
+        checkbox.checked = false;
+      });
+      render();
+      writeState();
+    });
+
+    render();
+  </script>
+</body>
+</html>
